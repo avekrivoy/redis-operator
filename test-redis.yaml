@@ -1,0 +1,10 @@
+apiVersion: cache.assignment.yazio.com/v1alpha1
+kind: Redis
+metadata:
+  name: test-redis
+spec:
+  common: {}
+  master:
+    count: 1
+  replica:
+    count: 2
