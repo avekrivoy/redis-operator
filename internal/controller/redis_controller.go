@@ -18,7 +18,6 @@ package controller
 
 import (
 	"context"
-	"fmt"
 
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
@@ -44,6 +43,8 @@ type RedisReconciler struct {
 //+kubebuilder:rbac:groups=cache.assignment.yazio.com,resources=redis,verbs=get;list;watch;create;update;patch;delete
 //+kubebuilder:rbac:groups=cache.assignment.yazio.com,resources=redis/status,verbs=get;update;patch
 //+kubebuilder:rbac:groups=cache.assignment.yazio.com,resources=redis/finalizers,verbs=update
+//+kubebuilder:rbac:groups=core,resources=services;secrets,verbs=create;update;delete;get;list;watch
+//+kubebuilder:rbac:groups=apps,resources=deployments,verbs=create;update;delete;get;list;watch
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
@@ -92,7 +93,6 @@ func (r *RedisReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl
 				}
 			}
 
-			fmt.Println(resource)
 			_, apiError := controllerutil.CreateOrUpdate(ctx, r.Client, resource, func() error {
 				return builder.Update(resource)
 			})
